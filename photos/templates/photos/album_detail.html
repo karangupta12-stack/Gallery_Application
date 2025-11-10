@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ album.title }}</title>
+    <link rel="stylesheet" href="{% static 'photos/css/gallery.css' %}">
+    <link rel="stylesheet" href="{% static 'photos/css/albums.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="album-header">
+            <a href="{% url 'album-list' %}" class="back-link">&larr; Back to Collections</a>
+            <h1>{{ album.title }}</h1>
+        </div>
+
+        <!-- Corrected Upload Form -->
+        <div class="upload-form">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" name="image_files" multiple required>
+                <button type="submit">Add Photos to Album</button>
+            </form>
+        </div>
+
+        <!-- Photo Grid -->
+        <div class="photo-grid">
+            {% for photo in photos %}
+                <div class="photo-card">
+                    <img src="{{ photo.image.url }}" alt="Photo from {{ album.title }}">
+                </div>
+            {% empty %}
+                <p class="empty-gallery-message">This album is empty. Add your first photo!</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="imageModal" class="modal">
+        <span class="close-btn">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+
+    <!-- ... aapka modal HTML ... -->
+
+    <script>
+        // Get the modal element
+        const modal = document.getElementById("imageModal");
+        const modalImg = document.getElementById("modalImage");
+
+        // Get all images in the photo grid on THIS page
+        const galleryImages = document.querySelectorAll(".photo-card img");
+
+        // Loop through each image and add a click event listener
+        galleryImages.forEach(img => {
+            img.onclick = function() {
+                modal.style.display = "flex";
+                modalImg.src = this.src;
+            }
+        });
+
+        // Get the <span> element that closes the modal
+        const closeButton = document.querySelector(".close-btn");
+
+        // When the user clicks on <span> (x), close the modal
+        closeButton.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere on the modal background, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+
+</body>
+</html>

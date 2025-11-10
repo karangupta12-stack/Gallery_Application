@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bin</title>
+    <link rel="stylesheet" href="{% static 'photos/css/gallery.css' %}">
+    <link rel="stylesheet" href="{% static 'photos/css/albums.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="album-header">
+            <a href="{% url 'album-list' %}" class="back-link">&larr; Back to Collections</a>
+            <h1>Bin</h1>
+        </div>
+        <p>Photos in the bin will be deleted permanently after 30 days.</p>
+
+        <h2>Deleted Photos</h2>
+        <div class="photo-grid">
+            {% for photo in photos %}
+                <div class="photo-card">
+                    <img src="{{ photo.image.url }}" alt="Binned Photo">
+                    <div class="photo-actions">
+                        <!-- Restore Form -->
+                        <form method="post" action="{% url 'restore-photo' photo.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-restore">Restore</button>
+                        </form>
+                        <!-- Permanent Delete Form -->
+                        <form method="post" action="{% url 'delete-photo-permanently' photo.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-delete-perm">Delete Forever</button>
+                        </form>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="empty-gallery-message">The bin is empty.</p>
+            {% endfor %}
+        </div>
+
+
+        <hr class="section-divider" style="margin: 30px 0;">
+        <h2>Deleted Videos</h2>
+        <div class="photo-grid">
+            {% for video in videos %}
+                <div class="photo-card">
+                    <video controls class="video-thumbnail">
+                        <source src="{{ video.video_file.url }}" type="video/mp4">
+                    </video>
+                    <div class="photo-actions">
+                        <!-- Naya Restore Form (videos ke liye) -->
+                        <form method="post" action="{% url 'restore-video' video.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-restore">Restore</button>
+                        </form>
+                        <!-- Naya Permanent Delete Form (videos ke liye) -->
+                        <form method="post" action="{% url 'delete-video-permanently' video.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-delete-perm">Delete Forever</button>
+                        </form>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="empty-gallery-message">No videos in the bin.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="imageModal" class="modal">
+        <span class="close-btn">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+
+    <script>
+        // Get the modal element
+        const modal = document.getElementById("imageModal");
+        const modalImg = document.getElementById("modalImage");
+
+        // Get all images in the photo grid
+        const galleryImages = document.querySelectorAll(".photo-card img");
+
+        // Loop through each image and add a click event listener
+        galleryImages.forEach(img => {
+            img.onclick = function() {
+                modal.style.display = "flex"; // Show the modal
+                modalImg.src = this.src; // Set the modal image source to the clicked image's source
+            }
+        });
+
+        // Get the <span> element that closes the modal
+        const closeButton = document.querySelector(".close-btn");
+
+        // When the user clicks on <span> (x), close the modal
+        closeButton.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere on the modal background (not the image), close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+
+</body>
+</html>

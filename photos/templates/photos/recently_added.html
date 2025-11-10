@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recently Added</title>
+    <link rel="stylesheet" href="{% static 'photos/css/gallery.css' %}">
+    <link rel="stylesheet" href="{% static 'photos/css/albums.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="album-header">
+            <a href="{% url 'album-list' %}" class="back-link">&larr; Back to Collections</a>
+            <h1>Recently Added</h1>
+        </div>
+
+        <p>Your most recently uploaded photos appear first.</p>
+
+        <!-- We are re-using the exact same photo grid style -->
+        <div class="photo-grid">
+            {% for photo in photos %}
+                <div class="photo-card">
+                    <img src="{{ photo.image.url }}" alt="Recently Added Photo">
+                    <!-- We can add favourite/delete buttons here later if needed -->
+                </div>
+            {% empty %}
+                <p class="empty-gallery-message">You haven't uploaded any photos yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- START: Full-screen Image Modal (for zoom) -->
+    <div id="imageModal" class="modal">
+        <span class="close-btn">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+    <!-- END: Full-screen Image Modal -->
+
+    <script>
+        // This is the same JavaScript from our other pages for the zoom feature
+        const modal = document.getElementById("imageModal");
+        const modalImg = document.getElementById("modalImage");
+        const galleryImages = document.querySelectorAll(".photo-card img");
+        galleryImages.forEach(img => {
+            img.onclick = function() {
+                modal.style.display = "flex";
+                modalImg.src = this.src;
+            }
+        });
+        const closeButton = document.querySelector(".close-btn");
+        closeButton.onclick = function() {
+            modal.style.display = "none";
+        }
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

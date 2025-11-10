@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Videos</title>
+    <link rel="stylesheet" href="{% static 'photos/css/gallery.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="album-header">
+            <a href="{% url 'album-list' %}" class="back-link">&larr; Back to Collections</a>
+            <h1>Videos</h1>
+        </div>
+
+        <div class="photo-grid">
+            {% for video in videos %}
+                <div class="photo-card">
+                    <!-- HTML <video> tag ka istemaal karein -->
+                    <video controls class="video-thumbnail">
+                        <source src="{{ video.video_file.url }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+
+                    <form method="post" action="{% url 'delete-video' video.id %}" class="delete-form">
+                        {% csrf_token %}
+                        <button type="submit" class="delete-btn" title="Delete Video">&times;</button>
+                    </form>
+                </div>
+            {% empty %}
+                <p class="empty-gallery-message">You haven't uploaded any videos yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

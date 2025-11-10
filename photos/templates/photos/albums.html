@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Collections</title>
+    <link rel="stylesheet" href="{% static 'photos/css/gallery.css' %}">
+    <link rel="stylesheet" href="{% static 'photos/css/albums.css' %}">
+</head>
+<body>
+    <div class="container">
+
+        <!-- Header with Home Icon and Title -->
+        <div class="collections-header">
+            <a href="{% url 'gallery' %}" class="home-link-icon" title="Back to Main Gallery">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+            </a>
+
+            <a href="{% url 'search' %}" class="home-link-icon" title="Go to Search">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            </a>
+            
+        </div>
+
+        <h1>Collections</h1>
+        <!-- Top row of feature placeholders -->
+        <div class="feature-grid">
+            <a href="{% url 'view-favourites' %}" class="feature-card">Favourites</a>
+            <a href="{% url 'view-bin' %}" class="feature-card">Bin</a>
+            <a href="{% url 'view-videos' %}" class="feature-card">Videos</a>
+            <a href="{% url 'recently-added' %}" class="feature-card">Recently Added</a>
+        </div>
+
+        <hr class="section-divider">
+
+        <h2>Albums</h2>
+
+        <!-- Form to create a new album -->
+        <div class="create-album-container">
+            <form method="post" action="{% url 'create-album' %}" class="create-album-form">
+                {% csrf_token %}
+                <input type="text" name="album_title" placeholder="Enter new album name" required>
+                <button type="submit" title="Create New Album">+</button>
+            </form>
+        </div>
+        
+        <!-- Grid to display all existing albums -->
+        <div class="album-grid">
+            {% for album in albums %}
+                <div class="album-card-wrapper">
+                    <a href="{% url 'album-detail' album.id %}" class="album-card">
+                        <div class="album-thumbnail">
+                            {% if album.cover_photo %}
+                                <!-- If album has photos, show the first one as a cover -->
+                                <img src="{{ album.cover_photo.image.url }}" alt="{{ album.title }} cover">
+                            {% else %}
+                                <!-- If album is empty, show a placeholder -->
+                                <div class="album-thumbnail-empty">
+                                    <span>Empty</span>
+                                </div>
+                            {% endif %}
+                            
+                        </div>
+                        <div class="album-title">{{ album.title }}</div>
+                    </a>
+                    <!-- Delete form and button for each album -->
+                    <form method="post" action="{% url 'delete-album' album.id %}" class="album-delete-form">
+                        {% csrf_token %}
+                        <button type="submit" class="album-delete-btn" title="Delete Album">&times;</button>
+                    </form>
+                </div>
+            {% empty %}
+                <p>You haven't created any albums yet for this user.</p>
+            {% endfor %}
+        </div>
+
+    </div>
+    
+</body>
+</html>

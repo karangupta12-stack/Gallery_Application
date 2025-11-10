@@ -1,0 +1,117 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Gallery</title>
+    <link rel="stylesheet" href="{% static 'photos/css/gallery.css' %}  ">
+</head>
+<body>
+    <!-- Add this main container div -->
+    <div class="container">
+
+        <h1>Welcome to Your Gallery, {{ user.username }}!</h1>
+
+        <div class="tabs-container">
+            <div class="tabs-left">
+                <a href="{% url 'gallery' %}" class="tab-link active">All Photos</a>
+                <a href="{% url 'album-list' %}" class="tab-link">Collections</a>
+                <a href="{% url 'search' %}" class="tab-link">Search</a>
+            </div>
+            <!-- Change the class of the logout link to 'logout-btn' -->
+            <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+        </div>
+
+        <!-- Add a wrapper for the form -->
+       <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <select name="album_select" class="album-select">
+                <option value="">-- Add to Album (Optional) --</option>
+                {% for album in albums %}
+                    <option value="{{ album.id }}">{{ album.title }}</option>
+                {% endfor %}
+            </select>
+            
+            <!-- YAHAN CHANGES HAIN -->
+            <input type="file" name="media_files" accept="image/*,video/*" multiple required>
+            
+            <button type="submit">Upload Media</button>
+        </form>
+        
+
+        <!-- Replace the old photo-grid div with this new structure -->
+        <div class="gallery-container">
+            {% for upload_date, photos_on_day in grouped_photos.items %}
+                <div class="date-group">
+                    <!-- Display the date header, formatted nicely -->
+                    <h2 class="date-header">{{ upload_date|date:"D, M j" }}</h2>
+                    
+                    <!-- This is the grid for photos from a specific day -->
+                    <div class="photo-grid">
+                        {% for photo in photos_on_day %}
+                            <div class="photo-card">
+                                <img src="{{ photo.image.url }}" alt="Photo by {{ user.username }}">
+                                
+                                <!-- Favourite Button Form -->
+                                <form method="post" action="{% url 'toggle-favourite' photo.id %}" class="favourite-form">
+                                    {% csrf_token %}
+                                    <button type="submit" class="favourite-btn {% if photo.is_favourite %}active{% endif %}" title="Favourite">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                    </button>
+                                </form>
+
+                                <!-- Delete Button Form -->
+                                <form method="post" action="{% url 'delete-photo' photo.id %}" class="delete-form">
+                                    {% csrf_token %}
+                                    <button type="submit" class="delete-btn" title="Delete Photo">&times;</button>
+                                </form>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% empty %}
+                <p class="empty-gallery-message">Your gallery is empty. Upload your first photo!</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="imageModal" class="modal">
+        <span class="close-btn">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+
+    <script>
+        // Get the modal element
+        const modal = document.getElementById("imageModal");
+        const modalImg = document.getElementById("modalImage");
+
+        // Get all images in the photo grid
+        const galleryImages = document.querySelectorAll(".photo-card img");
+
+        // Loop through each image and add a click event listener
+        galleryImages.forEach(img => {
+            img.onclick = function() {
+                modal.style.display = "flex"; // Show the modal
+                modalImg.src = this.src; // Set the modal image source to the clicked image's source
+            }
+        });
+
+        // Get the <span> element that closes the modal
+        const closeButton = document.querySelector(".close-btn");
+
+        // When the user clicks on <span> (x), close the modal
+        closeButton.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere on the modal background (not the image), close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+
+</body>
+</html>
