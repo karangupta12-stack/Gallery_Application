@@ -35,7 +35,9 @@
             <!-- YAHAN CHANGES HAIN -->
             <input type="file" name="media_files" accept="image/*,video/*" multiple required>
             
-            <button type="submit1">Upload Media</button>
+            <button type="submit1" onclick="this.innerHTML='Uploading...'; this.disabled=true; this.form.submit();">
+                Upload Media
+            </button>
         </form>
         
 

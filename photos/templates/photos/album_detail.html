@@ -19,7 +19,9 @@
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <input type="file" name="image_files" multiple required>
-                <button type="submit">Add Photos to Album</button>
+                <button type="submit" onclick="this.innerHTML='Uploading...'; this.disabled=true; this.form.submit();">
+                    Add Photos to Album
+                </button>            
             </form>
         </div>
 
