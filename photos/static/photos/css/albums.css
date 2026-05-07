@@ -1,0 +1,334 @@
+/* Album and collection pages */
+.collections-header {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  margin: 4px 0 14px;
+}
+
+.home-link-icon {
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  box-shadow: var(--shadow-sm);
+  color: var(--muted);
+  display: inline-flex;
+  height: 42px;
+  justify-content: center;
+  text-decoration: none;
+  transition: background-color var(--transition), color var(--transition), border-color var(--transition), transform var(--transition);
+  width: 42px;
+}
+
+.home-link-icon:hover {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.home-link-icon svg {
+  height: 20px;
+  stroke: currentColor;
+  width: 20px;
+}
+
+.feature-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-bottom: 26px;
+}
+
+.feature-card {
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  color: var(--ink);
+  display: flex;
+  font-size: 0.96rem;
+  font-weight: 750;
+  gap: 12px;
+  min-height: 76px;
+  padding: 16px;
+  text-decoration: none;
+  transition: background-color var(--transition), border-color var(--transition), box-shadow var(--transition), color var(--transition), transform var(--transition);
+}
+
+.feature-card::before {
+  align-items: center;
+  background: var(--brand-soft);
+  border: 1px solid rgba(15, 118, 110, 0.18);
+  border-radius: 8px;
+  color: var(--brand-dark);
+  display: block;
+  flex: 0 0 38px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  height: 38px;
+  justify-content: center;
+  line-height: 38px;
+  text-align: center;
+  width: 38px;
+}
+
+.feature-card:nth-child(1)::before {
+  content: "Fav";
+}
+
+.feature-card:nth-child(2)::before {
+  content: "Bin";
+}
+
+.feature-card:nth-child(3)::before {
+  content: "Vid";
+}
+
+.feature-card:nth-child(4)::before {
+  content: "New";
+}
+
+.feature-card:hover {
+  background: #fbfffe;
+  border-color: rgba(15, 118, 110, 0.35);
+  box-shadow: var(--shadow-md);
+  color: var(--brand-dark);
+  transform: translateY(-1px);
+}
+
+.section-divider {
+  background: var(--line);
+  border: 0;
+  height: 1px;
+  margin: 26px 0 30px;
+}
+
+.create-album-container {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 22px;
+  padding: 14px;
+}
+
+.create-album-form {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  display: flex;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+}
+
+.create-album-form input[type="text"] {
+  flex: 1;
+  min-width: 180px;
+}
+
+.create-album-form button {
+  align-items: center;
+  background: var(--brand);
+  border-radius: 7px;
+  box-shadow: 0 8px 18px rgba(15, 118, 110, 0.2);
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  font-size: 1.35rem;
+  font-weight: 750;
+  height: 44px;
+  justify-content: center;
+  transition: background-color var(--transition), transform var(--transition);
+  width: 48px;
+}
+
+.create-album-form button:hover {
+  background: var(--brand-dark);
+  transform: translateY(-1px);
+}
+
+.album-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  margin-bottom: 28px;
+}
+
+.album-card-wrapper {
+  position: relative;
+}
+
+.album-card {
+  color: var(--ink);
+  display: block;
+  text-decoration: none;
+}
+
+.album-thumbnail {
+  aspect-ratio: 1;
+  background: linear-gradient(135deg, #e7eef5, #cbd5e1);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  position: relative;
+  transition: box-shadow var(--transition), transform var(--transition), border-color var(--transition);
+  width: 100%;
+}
+
+.album-thumbnail::after {
+  background: linear-gradient(180deg, transparent 54%, rgba(17, 24, 39, 0.34));
+  content: "";
+  inset: 0;
+  opacity: 0;
+  position: absolute;
+  transition: opacity var(--transition);
+}
+
+.album-card:hover .album-thumbnail {
+  border-color: rgba(15, 118, 110, 0.35);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.album-card:hover .album-thumbnail::after {
+  opacity: 1;
+}
+
+.album-thumbnail img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 260ms ease;
+  width: 100%;
+}
+
+.album-card:hover .album-thumbnail img {
+  transform: scale(1.035);
+}
+
+.album-thumbnail-empty {
+  align-items: center;
+  background:
+    linear-gradient(135deg, rgba(15, 118, 110, 0.10), rgba(2, 132, 199, 0.10)),
+    #eef3f7;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  width: 100%;
+}
+
+.album-thumbnail-empty span {
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 750;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.album-title {
+  color: var(--ink);
+  font-size: 0.98rem;
+  font-weight: 750;
+  margin-top: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.album-grid > p {
+  background: var(--surface);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius);
+  color: var(--muted);
+  grid-column: 1 / -1;
+  padding: 24px;
+  text-align: center;
+}
+
+.album-card:hover .album-title {
+  color: var(--brand-dark);
+}
+
+.album-delete-form {
+  opacity: 0;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  transition: opacity var(--transition);
+  z-index: 6;
+}
+
+.album-card-wrapper:hover .album-delete-form {
+  opacity: 1;
+}
+
+.album-delete-btn {
+  align-items: center;
+  background: rgba(220, 38, 38, 0.94);
+  border-radius: 7px;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  font-size: 24px;
+  height: 36px;
+  justify-content: center;
+  line-height: 1;
+  transition: background-color var(--transition), transform var(--transition);
+  width: 36px;
+}
+
+.album-delete-btn:hover {
+  background: var(--danger-dark);
+  transform: scale(1.04);
+}
+
+.album-header {
+  margin-bottom: 24px;
+}
+
+.back-link {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--brand-dark);
+  margin-bottom: 14px;
+}
+
+.back-link:hover {
+  background: var(--brand-soft);
+  border-color: rgba(15, 118, 110, 0.28);
+}
+
+@media (max-width: 800px) {
+  .feature-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .feature-card {
+    min-height: 70px;
+    padding: 14px;
+  }
+
+  .album-grid {
+    gap: 12px;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+
+  .create-album-form {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .create-album-form button {
+    width: 100%;
+  }
+
+  .album-delete-form {
+    opacity: 1;
+  }
+}
