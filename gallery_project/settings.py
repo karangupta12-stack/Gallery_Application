@@ -89,6 +89,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 # Local development ke liye static files ka path
 STATICFILES_DIRS = [
     BASE_DIR / 'photos' / 'static',
