@@ -1,0 +1,31 @@
+    # Python bytecode
+    *.pyc
+    __pycache__/
+
+    # Virtual environment
+    env/
+    venv/
+
+    # Django files
+    db.sqlite3
+    .env
+
+    # User-uploaded files (IMPORTANT)
+    /media/
+    /user_photos/
+
+    # Static files (Collected by collectstatic)
+    /staticfiles/
+
+
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+venv/
+env/
+.venv/
+db.sqlite3
+.env
+media/
+staticfiles/
